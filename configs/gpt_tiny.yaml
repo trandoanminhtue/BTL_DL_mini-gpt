@@ -1,0 +1,29 @@
+# ~6–8M params (scaling study — smallest)
+_base: configs/default.yaml
+model:
+  name: gpt
+  vocab_size: 16000
+  n_layer: 4
+  n_head: 4
+  n_embd: 256
+  n_positions: 256
+  dropout: 0.1
+  bias: true
+  tie_weights: true
+train:
+  epochs: 6
+  batch_size: 32
+  grad_accum: 2
+  lr: 0.0003
+  min_lr: 0.00003
+  weight_decay: 0.1
+  warmup_steps: 200
+  max_steps: null
+  grad_clip: 1.0
+  amp: true
+  save_every_epochs: 1
+eval:
+  batch_size: 32
+  stride: 128
+experiment:
+  size_name: tiny

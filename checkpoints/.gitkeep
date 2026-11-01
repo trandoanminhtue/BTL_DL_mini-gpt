@@ -1,0 +1,7 @@
+# Place trained weights here later:
+#   checkpoints/ngram/best.json
+#   checkpoints/lstm/best.pt
+#   checkpoints/gpt_tiny/best.pt
+#   checkpoints/gpt_small/best.pt
+#   checkpoints/gpt_medium/best.pt
+#   checkpoints/gpt_small_instruct/best.pt

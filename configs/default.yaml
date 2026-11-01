@@ -1,0 +1,40 @@
+seed: 42
+device: auto          # auto | cpu | cuda
+output_dir: outputs
+checkpoint_dir: checkpoints
+log_interval: 50
+
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  tokenizer_path: data/tokenizer
+  sample_path: data/sample/corpus.txt
+  train_file: data/processed/train.txt
+  valid_file: data/processed/valid.txt
+  test_file: data/processed/test.txt
+  max_seq_len: 256
+  train_ratio: 0.90
+  valid_ratio: 0.05
+  # HuggingFace Wikipedia dump (change date/config if needed)
+  hf_dataset: wikimedia/wikipedia
+  hf_config: 20231101.vi
+  max_articles: 20000          # subset for a student GPU budget
+  min_chars: 80
+
+tokenizer:
+  vocab_size: 16000
+  min_frequency: 2
+  special_tokens:
+    - "<pad>"
+    - "<unk>"
+    - "<bos>"
+    - "<eos>"
+    - "<ins>"
+    - "<sep>"
+
+generation:
+  max_new_tokens: 80
+  temperature: 0.8
+  top_k: 50
+  top_p: 0.9
+  repetition_penalty: 1.1

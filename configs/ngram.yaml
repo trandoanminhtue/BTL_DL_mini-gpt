@@ -1,0 +1,14 @@
+_base: configs/default.yaml
+model:
+  name: ngram
+  order: 3                 # trigram
+  smoothing: interpolate   # laplace | interpolate
+  laplace_k: 1.0
+  lambdas: [0.1, 0.3, 0.6] # unigram, bigram, trigram (must sum to 1)
+  unk_threshold: 1         # treat tokens with count <= this as <unk> in counts
+train:
+  # n-gram is count-based; this is only used by the unified CLI
+  epochs: 1
+  batch_size: 1
+eval:
+  stride: 1

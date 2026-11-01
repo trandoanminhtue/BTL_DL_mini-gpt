@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minigpt-vi"
+version = "0.1.0"
+description = "Mini-GPT language model from scratch for Vietnamese, with n-gram and LSTM baselines."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "De tai 9 — Mini-GPT" }]
+dependencies = [
+  "torch>=2.1.0",
+  "numpy>=1.24",
+  "pyyaml>=6.0",
+  "tqdm>=4.66",
+  "regex>=2023.10.3",
+  "tokenizers>=0.15.0",
+  "datasets>=2.16.0",
+  "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

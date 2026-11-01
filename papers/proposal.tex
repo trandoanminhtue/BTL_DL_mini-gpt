@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+
+% Copy acl.sty from https://github.com/acl-org/acl-style-files into this folder.
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{booktabs}
+\usepackage{url}
+
+\title{Proposal: Mini-GPT for Vietnamese Language Modeling}
+
+\author{Team members \\
+  Course project --- Topic 9 \\
+  \texttt{replace-with-emails}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We propose a from-scratch decoder-only Transformer (Mini-GPT, 10--30M parameters) trained on Vietnamese text, compared against n-gram and LSTM language-model baselines. The study measures test perplexity on a shared BPE vocabulary, inspects sampled text, and reports how validation loss changes with model size. Optional extensions include temperature / top-$k$ / top-$p$ decoding and light instruction tuning.
+\end{abstract}
+
+\section{Introduction}
+
+Autoregressive language models estimate $p(x_t \mid x_{<t})$ and are the backbone of GPT-style systems~\cite{radford2018improving,radford2019language}. For a six-week course project we cannot train a large model, but we can implement a \emph{small} GPT, control tokenization, and run a fair comparison on Vietnamese. Vietnamese is a tonal isolating language written in Latin script with diacritics; dropping accents would collapse many word types, so the tokenizer must preserve them.
+
+\paragraph{Research questions.}
+(1) Does a 10--30M Mini-GPT trained from scratch obtain lower test perplexity than a trigram LM and an LSTM LM on the same Vietnamese split and tokenizer?
+(2) How does validation loss scale from a tiny ($\sim$7M) to a medium ($\sim$27M) Transformer?
+(3) How do temperature, top-$k$, and nucleus sampling~\cite{holtzman2020curious} change fluency of Vietnamese continuations?
+
+\section{Related work}
+
+Neural LMs date to~\cite{bengio2003neural}; recurrent LMs~\cite{mikolov2010recurrent} and LSTM~\cite{hochreiter1997lstm} remain strong small-data baselines. Transformers~\cite{vaswani2017attention} enable parallel training via self-attention. GPT uses a decoder-only stack with a causal mask~\cite{radford2018improving}. Kaplan et al.~\cite{kaplan2020scaling} describe smooth scaling of loss with parameters and tokens; we test the qualitative trend at student scale. Subword BPE~\cite{sennrich2016neural} is the default tokenizer. Textbook treatment of perplexity and n-grams follows~\cite{jurafsky2023slp}.
+
+\section{Data and resources}
+
+Primary corpus: a subset of Vietnamese Wikipedia (\texttt{wikimedia/wikipedia}, config \texttt{20231101.vi}), capped at about 20k articles for a single-GPU budget. Supplementary text (folk tales, lục bát, news excerpts) can be concatenated after the same cleaning pipeline. Documents are shuffled and split 90/5/5 by \emph{document} to limit leakage. A byte-level BPE tokenizer (vocabulary 16k) is trained on the train+valid text with special tokens \texttt{<pad>, <unk>, <bos>, <eos>, <ins>, <sep>}. All models share this tokenizer so perplexity is comparable. A tiny in-repo sample corpus is used only to debug the pipeline before the Wikipedia download.
+
+\section{Methods}
+
+\paragraph{Baselines.} Laplace / interpolated trigram on BPE ids. Two-layer LSTM LM with tied embeddings.
+
+\paragraph{Mini-GPT.} Token + learned positional embeddings, $L$ pre-norm Transformer blocks (causal multi-head attention, GELU MLP with ratio 4), final LayerNorm, tied LM head. Sizes: \textbf{tiny} $L{=}4,d{=}256$; \textbf{small} $L{=}8,d{=}384$ (main, $\sim$20M); \textbf{medium} $L{=}6,d{=}512$ ($\sim$27M). Context 256 tokens. Training: AdamW, cosine decay with warmup, gradient clipping, optional AMP.
+
+\paragraph{Decoding.} Greedy, temperature softmax, top-$k$, and top-$p$, plus a mild repetition penalty.
+
+\paragraph{Extension.} Supervised instruction tuning on a few thousand Vietnamese instruction--response pairs, with loss on the response span only.
+
+\section{Evaluation plan}
+
+Intrinsic: token-level negative log-likelihood and perplexity on valid/test. Extrinsic: blinded qualitative reading of continuations from fixed prompts (fairy-tale openings, lục bát seeds, encyclopedic sentences). Scaling: plot best validation loss vs.\ parameter count. Sampling: a grid of temperature $\times$ top-$k$ $\times$ top-$p$ on the same prompts. We will not invent metrics; numbers come from \texttt{outputs/*.json} after training.
+
+\section{Six-week schedule}
+
+Week 1: papers, environment, sample corpus, this proposal. Week 2: n-gram and LSTM. Week 3: Mini-GPT implementation and first run (milestone). Week 4: hyper-parameters and ablations. Week 5: scaling, sampling, error analysis, draft. Week 6: final ACL report, code, slides, demo.
+
+\paragraph{Risks.} Too little data $\rightarrow$ GPT may not beat n-gram; we then report the negative result and increase the Wikipedia subset. GPU limits $\rightarrow$ train tiny fully and medium for fewer epochs. Tokenizer mismatch $\rightarrow$ freeze one \texttt{tokenizer.json} before any training.
+
+\section{Division of work (suggested)}
+
+(1) Corpus, cleaning, BPE. (2) Mini-GPT and trainer. (3) Baselines, evaluation, scaling plots.
+
+\bibliography{refs}
+
+\end{document}

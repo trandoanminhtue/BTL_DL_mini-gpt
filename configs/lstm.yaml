@@ -1,0 +1,24 @@
+_base: configs/default.yaml
+model:
+  name: lstm
+  vocab_size: 16000        # overwritten from tokenizer after load
+  embed_dim: 256
+  hidden_dim: 512
+  num_layers: 2
+  dropout: 0.3
+  tie_weights: true
+train:
+  epochs: 8
+  batch_size: 32
+  grad_accum: 1
+  lr: 0.002
+  min_lr: 0.0002
+  weight_decay: 0.01
+  warmup_steps: 200
+  max_steps: null
+  grad_clip: 1.0
+  amp: true
+  save_every_epochs: 1
+eval:
+  batch_size: 32
+  stride: 128

@@ -1,0 +1,15 @@
+# Light instruction-tuning on top of a pretrained Mini-GPT checkpoint
+_base: configs/gpt_small.yaml
+data:
+  instruct_file: data/sample/instruct.jsonl
+  max_seq_len: 256
+train:
+  epochs: 3
+  batch_size: 8
+  grad_accum: 4
+  lr: 0.00005
+  warmup_steps: 50
+  freeze_embeddings: false
+instruct:
+  checkpoint: checkpoints/gpt_small/best.pt
+  response_only_loss: true

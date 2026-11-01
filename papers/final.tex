@@ -1,0 +1,106 @@
+\documentclass[11pt]{article}
+
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{url}
+
+\title{Mini-GPT: A Small Decoder-only Language Model for Vietnamese}
+
+\author{Team members \\
+  Course project --- Topic 9}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We implement a 10--30 million parameter GPT-style language model from scratch and train it on Vietnamese text. Interpolated n-gram and LSTM models serve as baselines under a shared BPE tokenizer. We compare perplexity and sampled continuations, plot validation loss against parameter count, and study temperature, top-$k$, and top-$p$ decoding. Light instruction tuning is optional. All reported numbers must be copied from training logs; placeholders below are left blank until checkpoints exist.
+\end{abstract}
+
+\section{Introduction}
+
+Language modeling is the task of assigning probability to token sequences~\cite{jurafsky2023slp}. Decoder-only Transformers~\cite{vaswani2017attention,radford2018improving,radford2019language} are the standard architecture. This paper asks whether a \emph{small} GPT, written without relying on \texttt{transformers.GPT2LMHeadModel}, can beat classical baselines on Vietnamese and whether loss decreases as we scale from $\sim$7M to $\sim$27M parameters~\cite{kaplan2020scaling}.
+
+\section{Related work}
+
+Neural LMs~\cite{bengio2003neural}, RNN LMs~\cite{mikolov2010recurrent}, LSTM~\cite{hochreiter1997lstm}, BPE~\cite{sennrich2016neural}, GPT~\cite{radford2018improving,radford2019language}, scaling laws~\cite{kaplan2020scaling}, and nucleus sampling~\cite{holtzman2020curious} frame the project. We do not claim SOTA; the contribution is a transparent student-scale study with released code.
+
+\section{Data}
+
+Vietnamese Wikipedia subset plus optional folk-tale / lục bát text. Document-level 90/5/5 split. Byte-level BPE, vocab 16k, NFC, accents kept. Statistics (fill after \texttt{prepare\_corpus.py}):
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Split & Docs & Characters & BPE tokens \\
+\midrule
+train & --- & --- & --- \\
+valid & --- & --- & --- \\
+test  & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\caption{Corpus statistics.}
+\end{table}
+
+\section{Models}
+
+\paragraph{N-gram.} Order-3, linear interpolation.
+
+\paragraph{LSTM.} 2-layer LSTM LM, tied embeddings.
+
+\paragraph{Mini-GPT.} Causal Transformer as in the code (\texttt{src/minigpt/models/gpt.py}). Training uses AdamW, warmup, cosine decay, clipping, AMP.
+
+\section{Experiments}
+
+\subsection{Perplexity}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lc}
+\toprule
+Model & Test PPL \\
+\midrule
+trigram & --- \\
+LSTM & --- \\
+GPT-tiny & --- \\
+GPT-small & --- \\
+GPT-medium & --- \\
+\bottomrule
+\end{tabular}
+\caption{Test perplexity (identical tokenizer).}
+\end{table}
+
+\subsection{Scaling}
+
+Insert \texttt{outputs/figures/scaling\_params\_vs\_loss.png} after training three sizes.
+
+\subsection{Sampling}
+
+Sweep temperature $\in \{0, 0.7, 1.0\}$, top-$k \in \{\emptyset, 20, 50\}$, top-$p \in \{\emptyset, 0.9\}$ with \texttt{scripts/compare\_sampling.py}. Discuss repetition, diacritics, and lục bát rhyme when the prompt is verse.
+
+\subsection{Instruction tuning (optional)}
+
+Few-thousand Vietnamese JSONL pairs; loss on the response after \texttt{<sep>}. Report whether the model follows ``Viết hai câu lục bát...'' better than the base LM, even if generic PPL rises.
+
+\section{Error analysis}
+
+Typical failure modes to inspect: dropped tones, English subword fragments, looped tokens under greedy decoding, n-gram locally fluent but globally inconsistent, LSTM fading on long prompts, GPT memorizing Wikipedia templates. Include 3--5 annotated examples in the appendix.
+
+\section{Conclusion}
+
+Restate whether Mini-GPT beat the baselines, whether scaling was monotone, and what sampling setting the authors prefer for Vietnamese demo text. Limitations: small data, 256-token context, no human evaluation protocol beyond informal reading.
+
+\bibliography{refs}
+
+\appendix
+\section{Hyper-parameters}
+See \texttt{configs/*.yaml} in the code release.
+
+\section{Example generations}
+Paste prompt / completion pairs from \texttt{outputs/sampling/} after checkpoints are trained.
+
+\end{document}

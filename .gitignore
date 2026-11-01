@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data & artifacts (keep folder placeholders)
+data/raw/**
+data/processed/**
+data/tokenizer/**
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/tokenizer/.gitkeep
+!data/sample/**
+
+# Checkpoints / logs (weights are added later)
+checkpoints/**
+!checkpoints/.gitkeep
+outputs/**
+!outputs/.gitkeep
+runs/
+wandb/
+lightning_logs/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# LaTeX
+papers/*.aux
+papers/*.bbl
+papers/*.blg
+papers/*.log
+papers/*.out
+papers/*.toc
+papers/*.synctex.gz
+papers/*.fdb_latexmk
+papers/*.fls

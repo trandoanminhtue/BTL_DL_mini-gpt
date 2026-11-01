@@ -1,0 +1,20 @@
+{"instruction": "Hoàn thiện đoạn truyện cổ tích bằng hai câu.", "input": "Ngày xửa ngày xưa, ở một làng quê có một chàng trai chăm chỉ.", "output": "Chàng ra đồng từ sớm, tối về đọc sách dưới đèn dầu. Người trong làng quý chàng vì luôn giúp đỡ kẻ khó."}
+{"instruction": "Viết hai câu lục bát về công cha nghĩa mẹ.", "input": "", "output": "Công cha như núi Thái Sơn\nNghĩa mẹ như nước trong nguồn chảy ra."}
+{"instruction": "Giải thích tục ngữ sau bằng một câu.", "input": "Đi một ngày đàng, học một sàng khôn.", "output": "Ra đường và tiếp xúc thực tế giúp con người học được nhiều điều hơn ngồi một chỗ."}
+{"instruction": "Tóm tắt huyền sử Sơn Tinh Thủy Tinh trong ba câu.", "input": "", "output": "Sơn Tinh và Thủy Tinh cùng cầu hôn Mỵ Nương. Sơn Tinh đến trước nên cưới được. Thủy Tinh dâng nước đánh núi mỗi năm, giải thích lũ lụt."}
+{"instruction": "Cho biết thủ đô của Việt Nam.", "input": "", "output": "Thủ đô của Việt Nam là Hà Nội."}
+{"instruction": "Viết một đoạn bách khoa ngắn về sông Hồng.", "input": "", "output": "Sông Hồng là con sông lớn ở miền Bắc Việt Nam, bồi đắp đồng bằng châu thổ và gắn với nền nông nghiệp lúa nước."}
+{"instruction": "Sửa câu thiếu dấu thành câu đúng chính tả.", "input": "Hom nay troi mua to o Ha Noi.", "output": "Hôm nay trời mưa to ở Hà Nội."}
+{"instruction": "Kể tên hai thể thơ dân gian tiếng Việt.", "input": "", "output": "Hai thể thơ dân gian phổ biến là lục bát và song thất lục bát."}
+{"instruction": "Trả lời như giáo viên: perplexity trong mô hình ngôn ngữ nghĩa là gì?", "input": "", "output": "Perplexity là e mũ cross-entropy trung bình trên token; càng thấp thì mô hình càng ít bất ngờ trước văn bản thật."}
+{"instruction": "Viết lời chào khách du lịch đến Hội An.", "input": "", "output": "Chào bạn đến Hội An, phố cổ đèn lồng và nhà gỗ ven sông Hoài. Đi chậm, nhìn mái ngói và nghe tiếng bước chân trên phố."}
+{"instruction": "Đặt một câu hỏi đọc hiểu cho đoạn sau.", "input": "Thánh Gióng đánh giặc xong, cởi áo bay về trời.", "output": "Sau khi đánh giặc, Thánh Gióng đã làm gì?"}
+{"instruction": "Trả lời ngắn câu hỏi đọc hiểu.", "input": "Sau khi đánh giặc, Thánh Gióng đã làm gì?", "output": "Người cởi áo và bay về trời."}
+{"instruction": "Viết câu tiếp theo theo văn phong Wikipedia.", "input": "Đà Lạt là thành phố thuộc tỉnh Lâm Đồng, nằm trên cao nguyên Lâm Viên.", "output": "Khí hậu ôn hòa nên Đà Lạt có nhiều loài hoa và là điểm du lịch nổi tiếng của Tây Nguyên."}
+{"instruction": "Cho ví dụ một prompt tốt để sinh thơ lục bát.", "input": "", "output": "Hãy viết bốn câu lục bát về mùa lúa chín ở đồng bằng sông Hồng, giữ đúng vần 6-8."}
+{"instruction": "Dịch ý sang tiếng Việt giản dị.", "input": "Transformer decoder uses causal self-attention.", "output": "Khối giải mã Transformer dùng self-attention chỉ nhìn về quá khứ, không nhìn token tương lai."}
+{"instruction": "Liệt kê ba thành phần của Mini-GPT.", "input": "", "output": "Ba thành phần chính là embedding (token và vị trí), chồng khối decoder có attention nhân quả, và đầu lm_head dự đoán token tiếp theo."}
+{"instruction": "Nêu một hạn chế của mô hình n-gram.", "input": "", "output": "N-gram không nắm được phụ thuộc xa vì chỉ điều kiện hóa trên n-1 token liền trước."}
+{"instruction": "Viết đoạn kết truyện theo công thức dân gian.", "input": "Hai anh em chia của công bằng, làng xóm vui vẻ.", "output": "Thế là từ ấy nhà nào cũng no ấm, làng không còn chuyện tranh chấp. Người đời còn kể mãi câu chuyện ấy cho con cháu."}
+{"instruction": "So sánh greedy và nucleus sampling trong một câu.", "input": "", "output": "Greedy luôn chọn token xác suất lớn nhất nên ổn định nhưng dễ lặp, còn nucleus sampling lấy mẫu trong khối xác suất tích lũy p nên đa dạng hơn."}
+{"instruction": "Đặt tên một thí nghiệm scaling cho Mini-GPT.", "input": "", "output": "Giữ nguyên corpus và tokenizer, huấn luyện ba cấu hình tiny, small, medium rồi vẽ best validation loss theo số tham số."}

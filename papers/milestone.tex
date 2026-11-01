@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{url}
+
+\title{Milestone: Mini-GPT for Vietnamese Language Modeling}
+
+\author{Team members \\
+  Course project --- Topic 9}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This milestone reports the implemented pipeline: shared Vietnamese BPE tokenizer, interpolated trigram and LSTM baselines, and a from-scratch Mini-GPT. Code and configs are complete; neural weights are trained on the full Wikipedia subset as compute allows. We record environment checks, parameter counts, and any numbers obtained by week 3. Empty metric cells mean training is not finished---they must not be filled with invented values.
+\end{abstract}
+
+\section{Status versus proposal}
+
+The repository implements the design in the week-1 proposal: YAML configs, packed LM datasets, causal Transformer, LSTM, n-gram, perplexity scripts, and sampling. Week-3 deliverable is a runnable method, not a fully converged 30M model.
+
+\section{Implementation}
+
+\paragraph{Tokenizer.} Byte-level BPE, NFC normalization (diacritics kept), vocab size 16k.
+
+\paragraph{Mini-GPT.} GPT-2-style decoder: $d$ residual blocks, causal attention (PyTorch SDPA when available), GELU MLP, tied input/output embeddings. Parameter counts from \texttt{scripts/check\_env.py}:
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Size & $L$ & $d$ & Params (approx.) \\
+\midrule
+tiny   & 4 & 256 & $\sim$7M \\
+small  & 8 & 384 & $\sim$20M \\
+medium & 6 & 512 & $\sim$27M \\
+\bottomrule
+\end{tabular}
+\caption{Configured Mini-GPT sizes (tied embeddings, vocab 16k, context 256).}
+\end{table}
+
+\paragraph{Training.} AdamW with decoupled decay on 2D weights, cosine LR, grad clip 1.0, AMP on CUDA. Checkpoints: \texttt{checkpoints/<run>/best.pt} (neural) or \texttt{best.json} (n-gram).
+
+\paragraph{Baselines.} Trigram with interpolation $\lambda=(0.1,0.3,0.6)$. LSTM: 2 layers, hidden 512, tied embeddings.
+
+\section{Preliminary experiments}
+
+Replace the dashes after you actually train.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+Model & Valid PPL & Test PPL \\
+\midrule
+trigram     & --- & --- \\
+LSTM        & --- & --- \\
+Mini-GPT-small & --- & --- \\
+\bottomrule
+\end{tabular}
+\caption{Perplexity on the shared BPE vocabulary (fill from \texttt{outputs/}).}
+\end{table}
+
+\paragraph{Qualitative notes.} Untrained Mini-GPT produces random token salad (expected). After a smoke epoch on \texttt{data/sample/corpus.txt}, loss should drop but text remains weak. Wikipedia-scale training is required before claiming generation quality.
+
+\section{Issues and next steps}
+
+List real blockers: download quota, GPU OOM (reduce batch, raise \texttt{grad\_accum}), overfitting on the sample corpus. Weeks 4--5: full training, scaling curves, sampling sweep, optional SFT. Week 6: ACL camera-ready, demo, slides.
+
+\bibliography{refs}
+
+\end{document}
